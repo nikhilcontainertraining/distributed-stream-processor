@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats-leaf-node-1
+  labels:
+    group: nats
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nats
+      tier: infrastructure
+  template:
+    metadata:
+      labels:
+        app: nats
+        tier: infrastructure
+    spec:
+      containers:
+        - name: nats-leaf-node-1
+          image: nats
+          args:
+            [
+              "-p",
+              "4222",
+
+              "--http_port",
+              "8222",
+
+              "--cluster_name",
+              "nats-cluster",
+
+              "--cluster",
+              "nats://0.0.0.0:6222",
+
+              "--routes",
+              "nats://ruser:T0pS3cr3t@nats-service-main:6222",
+
+              "-DV"
+            ]
